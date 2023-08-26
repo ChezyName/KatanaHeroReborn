@@ -41,8 +41,8 @@ AKatanaHeroRebornCharacter::AKatanaHeroRebornCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	GetCharacterMovement()->MaxFlySpeed = 600.f;
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+	Katana = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KatanaModel"));
+	Katana -> SetupAttachment(GetMesh(),"RHand");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,9 +54,12 @@ void AKatanaHeroRebornCharacter::SetupPlayerInputComponent(class UInputComponent
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AKatanaHeroRebornCharacter::MoveRight);
+}
 
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &AKatanaHeroRebornCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &AKatanaHeroRebornCharacter::TouchStopped);
+void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	Katana->SetVisibility(SwordActive);
 }
 
 void AKatanaHeroRebornCharacter::MoveRight(float Value)
@@ -64,15 +67,3 @@ void AKatanaHeroRebornCharacter::MoveRight(float Value)
 	// add movement in that direction
 	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
 }
-
-void AKatanaHeroRebornCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// jump on any touch
-	Jump();
-}
-
-void AKatanaHeroRebornCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	StopJumping();
-}
-
