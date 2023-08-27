@@ -65,8 +65,15 @@ public:
 	bool SwordActive = false;
 
 	float DashCD = 0;
+	bool Dashing = false;
+	float X;
 
 	void DisplayAfterImages();
+
+	UPROPERTY(BlueprintReadOnly)
+	int Health = 3;
+
+	void TakeDamage();
 
 	//Primary Sword Attack
 	UPROPERTY(EditAnywhere,Category="Yasuo")
@@ -77,5 +84,11 @@ public:
 	float HitboxActiveT = 0.1;
 	UPROPERTY(EditAnywhere,Category="Yasuo|MainAttack")
 	float DashSpeed = 25;
-	
+	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
+	float DodgeSpeed = 35;
+	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
+	float DashTime = 0.2;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlaySlashVFX();
 };

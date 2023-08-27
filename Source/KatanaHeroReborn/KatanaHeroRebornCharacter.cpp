@@ -16,6 +16,13 @@ void AKatanaHeroRebornCharacter::DisplayAfterImages()
 	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
+void AKatanaHeroRebornCharacter::TakeDamage()
+{
+	Health -= 1;
+	DisplayAfterImages();
+	LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*3) * 80000,true,true);
+}
+
 FVector AKatanaHeroRebornCharacter::GetMouseLocation()
 {
 	APlayerController* PC = Cast<APlayerController>(GetController());
@@ -63,11 +70,21 @@ void AKatanaHeroRebornCharacter::StopLookingAtMouse()
 
 void AKatanaHeroRebornCharacter::Dash()
 {
-	if(DashCD > 0) return;
+	if(DashCD > 0 || Dashing) return;
 	//const FVector MoveDir = FVector(0,-GetInputAxisValue("MoveRight"),GetInputAxisValue("LookUp"));
-	LaunchCharacter(GetActorForwardVector() * 3500,true,true);
-	DisplayAfterImages();
-	DashCD = 3;
+	StopMovement = true;
+	Dashing = true;
+
+	FTimerDelegate TimerDelegate;
+	TimerDelegate.BindLambda([&]
+	{
+		DashCD = 3;
+		StopMovement = false;
+		Dashing = false;
+	});
+		
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, DashTime, false);
 }
 
 AKatanaHeroRebornCharacter::AKatanaHeroRebornCharacter()
@@ -130,7 +147,7 @@ void AKatanaHeroRebornCharacter::SetupPlayerInputComponent(class UInputComponent
 void AKatanaHeroRebornCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	X = GetActorLocation().X;
 	SetActorRotation(FRotator(0,-90,0));
 }
 
@@ -139,6 +156,12 @@ void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	Katana->SetVisibility(SwordActive);
 	DashCD -= DeltaSeconds;
+	if(Dashing)
+	{
+		LaunchCharacter(GetActorForwardVector() * (DodgeSpeed*100),true,false);
+		DisplayAfterImages();
+	}
+	SetActorLocation(FVector(X,GetActorLocation().Y,GetActorLocation().Z));
 }
 
 void AKatanaHeroRebornCharacter::KatanaAttack()
@@ -153,6 +176,8 @@ void AKatanaHeroRebornCharacter::KatanaAttack()
 	//LookAtMouse();
 	LaunchCharacter(GetActorForwardVector() * (DashSpeed*100),true,false);
 	DisplayAfterImages();
+
+	PlaySlashVFX();
 
 	FTimerDelegate TimerDelegate;
 	TimerDelegate.BindLambda([&]
