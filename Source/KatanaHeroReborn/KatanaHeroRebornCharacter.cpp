@@ -12,8 +12,8 @@
 
 void AKatanaHeroRebornCharacter::DisplayAfterImages()
 {
-	AActor* VFX = UGameplayStatics::BeginDeferredActorSpawnFromClass(this,AfterImages,FTransform(FRotator::ZeroRotator,GetActorLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
-	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetActorLocation()));
+	AActor* VFX = UGameplayStatics::BeginDeferredActorSpawnFromClass(this,AfterImages,FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
+	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
 FVector AKatanaHeroRebornCharacter::GetMouseLocation()
