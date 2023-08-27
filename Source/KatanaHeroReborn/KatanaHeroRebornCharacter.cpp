@@ -2,6 +2,7 @@
 
 #include "KatanaHeroRebornCharacter.h"
 
+#include "DefaultEnemy.h"
 #include "DrawDebugHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -16,11 +17,14 @@ void AKatanaHeroRebornCharacter::DisplayAfterImages()
 	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
-void AKatanaHeroRebornCharacter::TakeDamage()
+void AKatanaHeroRebornCharacter::TakeDamage(float Damage)
 {
-	Health -= 1;
+	if(Attacking || Dashing) return;
+	if(Damage <= 0) return;
+	
+	Health -= Damage;
 	DisplayAfterImages();
-	LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*3) * 80000,true,true);
+	LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*0.6) * 1500,true,true);
 }
 
 FVector AKatanaHeroRebornCharacter::GetMouseLocation()
@@ -126,6 +130,7 @@ AKatanaHeroRebornCharacter::AKatanaHeroRebornCharacter()
 
 	KatanaHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("KatanaHitbox"));
 	KatanaHitbox -> SetupAttachment(RootComponent);
+	KatanaHitbox->OnComponentBeginOverlap.AddDynamic(this, &AKatanaHeroRebornCharacter::OnKatanaHit);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -149,6 +154,7 @@ void AKatanaHeroRebornCharacter::BeginPlay()
 	Super::BeginPlay();
 	X = GetActorLocation().X;
 	SetActorRotation(FRotator(0,-90,0));
+	KatanaHitbox->OnComponentBeginOverlap.AddDynamic(this, &AKatanaHeroRebornCharacter::OnKatanaHit);
 }
 
 void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
@@ -167,6 +173,7 @@ void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
 void AKatanaHeroRebornCharacter::KatanaAttack()
 {
 	if(Attacking) return;
+	EnemiesHit.Empty();
 	SwordActive = true;
 	Attacking = true;
 
@@ -175,9 +182,22 @@ void AKatanaHeroRebornCharacter::KatanaAttack()
 	StopMovement = true;
 	//LookAtMouse();
 	LaunchCharacter(GetActorForwardVector() * (DashSpeed*100),true,false);
-	DisplayAfterImages();
+	//DisplayAfterImages();
 
 	PlaySlashVFX();
+
+	TArray<AActor*> ActorsHit;
+	KatanaHitbox->GetOverlappingActors(ActorsHit);
+	for(AActor* A : ActorsHit)
+	{
+		ADefaultEnemy* Enemy = Cast<ADefaultEnemy>(A);
+		if(Enemy && !EnemiesHit.Contains(Enemy))
+		{
+			//Deal Damage To Enemy
+			Enemy->TakeDamage(KatanaDamage);
+			EnemiesHit.Add(Enemy);
+		}
+	}
 
 	FTimerDelegate TimerDelegate;
 	TimerDelegate.BindLambda([&]
@@ -213,4 +233,17 @@ void AKatanaHeroRebornCharacter::LookUp(float Val)
 void AKatanaHeroRebornCharacter::StartJump()
 {
 	if(!StopMovement) Jump();
+}
+
+void AKatanaHeroRebornCharacter::OnKatanaHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(!Attacking) return;
+	ADefaultEnemy* Enemy = Cast<ADefaultEnemy>(OtherActor);
+	if(Enemy && !EnemiesHit.Contains(Enemy))
+	{
+		//Deal Damage To Enemy
+		Enemy->TakeDamage(KatanaDamage);
+		EnemiesHit.Add(Enemy);
+	}
 }

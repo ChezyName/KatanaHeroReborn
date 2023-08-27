@@ -22,7 +22,8 @@ ADefaultEnemy::ADefaultEnemy()
 void ADefaultEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Health = MaxHealth;
+	DamageHitbox->OnComponentBeginOverlap.AddDynamic(this, &ADefaultEnemy::OnHit);
 }
 
 // Called every frame
@@ -40,7 +41,7 @@ void ADefaultEnemy::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 	if(Yasuo)
 	{
 		//Deal Damage To Yasuo
-		Yasuo->TakeDamage();
+		Yasuo->TakeDamage(Damage);
 	}
 }
 
@@ -49,5 +50,15 @@ void ADefaultEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ADefaultEnemy::TakeDamage(float _Damage)
+{
+	Health -= _Damage;
+	if(Health <= 0)
+	{
+		Destroy();
+		//Give Player Money
+	}
 }
 

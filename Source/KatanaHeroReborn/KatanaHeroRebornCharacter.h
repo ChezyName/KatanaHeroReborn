@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DefaultEnemy.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "KatanaHeroRebornCharacter.generated.h"
@@ -71,9 +72,11 @@ public:
 	void DisplayAfterImages();
 
 	UPROPERTY(BlueprintReadOnly)
-	int Health = 3;
+	float Health = 100;
+	UPROPERTY(BlueprintReadOnly)
+	float MaxHealth = 100;
 
-	void TakeDamage();
+	void TakeDamage(float Damage);
 
 	//Primary Sword Attack
 	UPROPERTY(EditAnywhere,Category="Yasuo")
@@ -91,4 +94,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlaySlashVFX();
+
+	UPROPERTY(EditAnywhere)
+	float KatanaDamage = 15;
+
+	TArray<ADefaultEnemy*> EnemiesHit;
+
+	UFUNCTION()
+	void OnKatanaHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
