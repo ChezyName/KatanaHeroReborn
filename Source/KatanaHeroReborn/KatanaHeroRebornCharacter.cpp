@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "KatanaHeroRebornCharacter.h"
-
 #include "DefaultEnemy.h"
 #include "DrawDebugHelpers.h"
 #include "Camera/CameraComponent.h"
@@ -17,7 +16,7 @@ void AKatanaHeroRebornCharacter::DisplayAfterImages()
 	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
-void AKatanaHeroRebornCharacter::TakeDamage(float Damage)
+void AKatanaHeroRebornCharacter::TakeDamageChar(float Damage)
 {
 	if(Attacking || Dashing) return;
 	if(Damage <= 0) return;
@@ -194,7 +193,7 @@ void AKatanaHeroRebornCharacter::KatanaAttack()
 		if(Enemy && !EnemiesHit.Contains(Enemy))
 		{
 			//Deal Damage To Enemy
-			Enemy->TakeDamage(KatanaDamage);
+			Enemy->TakeSomeDamage(KatanaDamage);
 			EnemiesHit.Add(Enemy);
 		}
 	}
@@ -243,7 +242,7 @@ void AKatanaHeroRebornCharacter::OnKatanaHit(UPrimitiveComponent* OverlappedComp
 	if(Enemy && !EnemiesHit.Contains(Enemy))
 	{
 		//Deal Damage To Enemy
-		Enemy->TakeDamage(KatanaDamage);
+		Enemy->TakeSomeDamage(KatanaDamage);
 		EnemiesHit.Add(Enemy);
 	}
 }

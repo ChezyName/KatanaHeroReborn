@@ -2,8 +2,8 @@
 
 
 #include "DefaultEnemy.h"
-
 #include "KatanaHeroRebornCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADefaultEnemy::ADefaultEnemy()
@@ -41,7 +41,7 @@ void ADefaultEnemy::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActo
 	if(Yasuo)
 	{
 		//Deal Damage To Yasuo
-		Yasuo->TakeDamage(Damage);
+		Yasuo->TakeDamageChar(Damage);
 	}
 }
 
@@ -52,13 +52,19 @@ void ADefaultEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-void ADefaultEnemy::TakeDamage(float _Damage)
+void ADefaultEnemy::TakeSomeDamage(float _Damage)
 {
 	Health -= _Damage;
 	if(Health <= 0)
 	{
-		Destroy();
 		//Give Player Money
+		for(int i = 0; i < CoinsDropped; i++)
+		{
+			AActor* NewCoin = UGameplayStatics::BeginDeferredActorSpawnFromClass(this,Coin,FTransform(FRotator::ZeroRotator,GetActorLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
+			UGameplayStatics::FinishSpawningActor(NewCoin, FTransform(FRotator::ZeroRotator,GetActorLocation()));
+			
+		}
+		Destroy();
 	}
 }
 

@@ -19,6 +19,11 @@ public:
 	UPROPERTY(EditAnywhere,meta=(AllowPrivateAccess=true))
 	UBoxComponent* DamageHitbox;
 
+	UPROPERTY(EditAnywhere,Category="Coins")
+	TSubclassOf<AActor> Coin;
+	UPROPERTY(EditAnywhere,Category="Coins")
+	int CoinsDropped = 0;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,6 +45,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void TakeDamage(float _Damage);
+	void TakeSomeDamage(float _Damage);
 
 };
