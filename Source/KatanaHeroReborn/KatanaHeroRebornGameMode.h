@@ -36,6 +36,9 @@ public:
 
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int StrengthUpgrade = 100;
+	
+	UFUNCTION(BlueprintCallable)
+	void OnDamageUpgrade();
 
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int SpeedUpgrade = 100;

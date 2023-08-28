@@ -23,3 +23,9 @@ void AKatanaHeroRebornGameMode::OnHealthUpgrade()
 	C->MaxHealth = HealthUpgrade;
 	C->Health = HealthUpgrade;
 }
+
+void AKatanaHeroRebornGameMode::OnDamageUpgrade()
+{
+	AKatanaHeroRebornCharacter* C = Cast<AKatanaHeroRebornCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	C->KatanaDamage = (15*(StrengthUpgrade/100));
+}
