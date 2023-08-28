@@ -2,7 +2,10 @@
 
 #include "KatanaHeroRebornGameMode.h"
 #include "KatanaHeroRebornCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
+
+class AKatanaHeroRebornCharacter;
 
 AKatanaHeroRebornGameMode::AKatanaHeroRebornGameMode()
 {
@@ -12,4 +15,11 @@ AKatanaHeroRebornGameMode::AKatanaHeroRebornGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+}
+
+void AKatanaHeroRebornGameMode::OnHealthUpgrade()
+{
+	AKatanaHeroRebornCharacter* C = Cast<AKatanaHeroRebornCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	C->MaxHealth = HealthUpgrade;
+	C->Health = HealthUpgrade;
 }

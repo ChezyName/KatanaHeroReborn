@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int HealthUpgrade = 100;
 
+	UFUNCTION(BlueprintCallable)
+	void OnHealthUpgrade();
+
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int StrengthUpgrade = 100;
 
