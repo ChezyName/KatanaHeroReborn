@@ -28,6 +28,8 @@ class AKatanaHeroRebornGameMode : public AGameModeBase
 public:
 	AKatanaHeroRebornGameMode();
 
+	void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int HealthUpgrade = 100;
 
@@ -42,6 +44,11 @@ public:
 
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int SpeedUpgrade = 100;
+
+	float baseMaxSpeed = 0;
+	
+	UFUNCTION(BlueprintCallable)
+	void OnSpeedUpgrade();
 
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int ManaUpgrade = 100;

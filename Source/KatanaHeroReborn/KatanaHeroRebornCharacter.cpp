@@ -3,6 +3,7 @@
 #include "KatanaHeroRebornCharacter.h"
 #include "DefaultEnemy.h"
 #include "DrawDebugHelpers.h"
+#include "KatanaHeroRebornGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -163,7 +164,10 @@ void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
 	DashCD -= DeltaSeconds;
 	if(Dashing)
 	{
-		LaunchCharacter(GetActorForwardVector() * (DodgeSpeed*100),true,false);
+		AKatanaHeroRebornGameMode* GM = Cast<AKatanaHeroRebornGameMode>(GetWorld()->GetAuthGameMode());
+		float Modifier = 100;
+		if(GM) Modifier = GM->SpeedUpgrade;
+		LaunchCharacter(GetActorForwardVector() * (DodgeSpeed*100 * (Modifier/100)),true,false);
 		DisplayAfterImages();
 	}
 	SetActorLocation(FVector(X,GetActorLocation().Y,GetActorLocation().Z));
