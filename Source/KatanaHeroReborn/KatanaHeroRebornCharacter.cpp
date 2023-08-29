@@ -82,7 +82,13 @@ void AKatanaHeroRebornCharacter::Dash()
 	FTimerDelegate TimerDelegate;
 	TimerDelegate.BindLambda([&]
 	{
-		DashCD = 3;
+		AKatanaHeroRebornGameMode* GM = Cast<AKatanaHeroRebornGameMode>(GetWorld()->GetAuthGameMode());
+		float Modifier = 100;
+		if(GM) Modifier = GM->SpeedUpgrade;
+		
+		DashCD = (4+3) - ((Modifier/100) * 4);
+		GEngine->AddOnScreenDebugMessage(-1,60,FColor::Emerald,
+			"Dash CD: " + FString::SanitizeFloat(DashCD) + " @ " + FString::SanitizeFloat(Modifier) + "%");
 		StopMovement = false;
 		Dashing = false;
 	});
