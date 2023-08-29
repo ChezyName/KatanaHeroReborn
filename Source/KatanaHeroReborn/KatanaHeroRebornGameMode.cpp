@@ -44,3 +44,10 @@ void AKatanaHeroRebornGameMode::OnSpeedUpgrade()
 	AKatanaHeroRebornCharacter* C = Cast<AKatanaHeroRebornCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 	C->GetCharacterMovement()->MaxWalkSpeed = (baseMaxSpeed*(SpeedUpgrade/100));
 }
+
+void AKatanaHeroRebornGameMode::OnManaUpgrade()
+{
+	AKatanaHeroRebornCharacter* C = Cast<AKatanaHeroRebornCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	C->MaxMana = ManaUpgrade;
+	C->Mana = ManaUpgrade;
+}

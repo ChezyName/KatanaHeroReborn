@@ -53,6 +53,9 @@ public:
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int ManaUpgrade = 100;
 
+	UFUNCTION(BlueprintCallable)
+	void OnManaUpgrade();
+
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	int APUpgrade = 100;
 

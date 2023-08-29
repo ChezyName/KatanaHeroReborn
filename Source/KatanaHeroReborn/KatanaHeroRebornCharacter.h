@@ -75,6 +75,11 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float MaxHealth = 100;
 
+	UPROPERTY(BlueprintReadOnly)
+	float Mana = 100;
+	UPROPERTY(BlueprintReadOnly)
+	float MaxMana = 100;
+
 	void TakeDamageChar(float Damage);
 
 	//Primary Sword Attack
