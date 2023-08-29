@@ -163,6 +163,8 @@ void AKatanaHeroRebornCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	Katana->SetVisibility(SwordActive);
 	DashCD -= DeltaSeconds;
+	if(Mana < MaxMana) Mana += 5 * DeltaSeconds * (MaxMana/100);
+	else Mana = MaxMana;
 	if(Dashing)
 	{
 		AKatanaHeroRebornGameMode* GM = Cast<AKatanaHeroRebornGameMode>(GetWorld()->GetAuthGameMode());
@@ -254,6 +256,8 @@ void AKatanaHeroRebornCharacter::OnKatanaHit(UPrimitiveComponent* OverlappedComp
 
 void AKatanaHeroRebornCharacter::SummonTornado()
 {
-	AActor* Tornado = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),TornadoSpawnable,FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
-	UGameplayStatics::FinishSpawningActor(Tornado, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
+	if(Mana < 75) return;
+	Mana -= 75;
+	AActor* Tornado = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),TornadoSpawnable,FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
+	UGameplayStatics::FinishSpawningActor(Tornado, FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()));
 }
