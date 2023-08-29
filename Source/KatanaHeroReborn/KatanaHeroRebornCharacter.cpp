@@ -154,6 +154,7 @@ void AKatanaHeroRebornCharacter::SetupPlayerInputComponent(class UInputComponent
 	
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AKatanaHeroRebornCharacter::KatanaAttack);
 	PlayerInputComponent->BindAction("Tornado", IE_Pressed, this, &AKatanaHeroRebornCharacter::SummonTornado);
+	PlayerInputComponent->BindAction("Potion", IE_Pressed, this, &AKatanaHeroRebornCharacter::UseHealthPot);
 }
 
 void AKatanaHeroRebornCharacter::BeginPlay()
@@ -266,4 +267,17 @@ void AKatanaHeroRebornCharacter::SummonTornado()
 	Mana -= 75;
 	AActor* Tornado = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),TornadoSpawnable,FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
 	UGameplayStatics::FinishSpawningActor(Tornado, FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()));
+}
+
+void AKatanaHeroRebornCharacter::UseHealthPot()
+{
+	if(Health < MaxHealth && HealthPots > 0)
+	{
+		AKatanaHeroRebornGameMode* GM = Cast<AKatanaHeroRebornGameMode>(GetWorld()->GetAuthGameMode());
+		float Modifier = 100;
+		if(GM) Modifier = GM->HealthUpgrade;
+		Health += 25 * (Modifier/100);
+		if(Health >= MaxHealth) Health = MaxHealth;
+		HealthPots--;
+	}
 }
