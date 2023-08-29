@@ -13,7 +13,7 @@
 
 void AKatanaHeroRebornCharacter::DisplayAfterImages()
 {
-	AActor* VFX = UGameplayStatics::BeginDeferredActorSpawnFromClass(this,AfterImages,FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
+	AActor* VFX = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),AfterImages,FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
 	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
@@ -147,6 +147,7 @@ void AKatanaHeroRebornCharacter::SetupPlayerInputComponent(class UInputComponent
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &AKatanaHeroRebornCharacter::Dash);
 	
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AKatanaHeroRebornCharacter::KatanaAttack);
+	PlayerInputComponent->BindAction("Tornado", IE_Pressed, this, &AKatanaHeroRebornCharacter::SummonTornado);
 }
 
 void AKatanaHeroRebornCharacter::BeginPlay()
@@ -249,4 +250,10 @@ void AKatanaHeroRebornCharacter::OnKatanaHit(UPrimitiveComponent* OverlappedComp
 		Enemy->TakeSomeDamage(KatanaDamage);
 		EnemiesHit.Add(Enemy);
 	}
+}
+
+void AKatanaHeroRebornCharacter::SummonTornado()
+{
+	AActor* Tornado = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),TornadoSpawnable,FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
+	UGameplayStatics::FinishSpawningActor(Tornado, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }

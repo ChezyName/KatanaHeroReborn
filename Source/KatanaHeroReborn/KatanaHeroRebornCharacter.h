@@ -95,6 +95,10 @@ public:
 	float DodgeSpeed = 35;
 	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
 	float DashTime = 0.2;
+	UPROPERTY(EditAnywhere,Category="Yasuo|Magic",BlueprintReadWrite)
+	TSubclassOf<AActor> TornadoSpawnable;
+
+	void SummonTornado();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlaySlashVFX();
