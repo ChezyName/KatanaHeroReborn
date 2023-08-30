@@ -85,6 +85,8 @@ public:
 
 	void UseHealthPot();
 
+	void PlaySound(TArray<USoundWave*> Sounds);
+
 	void TakeDamageChar(float Damage);
 
 	//Primary Sword Attack
@@ -96,12 +98,18 @@ public:
 	float HitboxActiveT = 0.1;
 	UPROPERTY(EditAnywhere,Category="Yasuo|MainAttack")
 	float DashSpeed = 25;
+	UPROPERTY(EditAnywhere,Category="Yasuo|MainAttack")
+	TArray<USoundWave*> AttackSFX;
 	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
 	float DodgeSpeed = 35;
 	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
 	float DashTime = 0.2;
+	UPROPERTY(EditAnywhere,Category="Yasuo|Dash")
+	TArray<USoundWave*> DashSFX;
 	UPROPERTY(EditAnywhere,Category="Yasuo|Magic",BlueprintReadWrite)
 	TSubclassOf<AActor> TornadoSpawnable;
+	UPROPERTY(EditAnywhere,Category="Yasuo|Magic")
+	TArray<USoundWave*> TornadoSFX;
 
 	void SummonTornado();
 

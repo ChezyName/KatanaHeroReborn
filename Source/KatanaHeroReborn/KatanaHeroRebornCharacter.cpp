@@ -78,6 +78,7 @@ void AKatanaHeroRebornCharacter::Dash()
 	//const FVector MoveDir = FVector(0,-GetInputAxisValue("MoveRight"),GetInputAxisValue("LookUp"));
 	StopMovement = true;
 	Dashing = true;
+	PlaySound(DashSFX);
 
 	FTimerDelegate TimerDelegate;
 	TimerDelegate.BindLambda([&]
@@ -192,6 +193,7 @@ void AKatanaHeroRebornCharacter::KatanaAttack()
 
 	//Slash Attack HERE
 	PlayAnimMontage(SwordAttachAnimation);
+	PlaySound(AttackSFX);
 	StopMovement = true;
 	//LookAtMouse();
 	LaunchCharacter(GetActorForwardVector() * (DashSpeed*100),true,false);
@@ -265,6 +267,7 @@ void AKatanaHeroRebornCharacter::SummonTornado()
 {
 	if(Mana < 75) return;
 	Mana -= 75;
+	PlaySound(TornadoSFX);
 	AActor* Tornado = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(),TornadoSpawnable,FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()),ESpawnActorCollisionHandlingMethod::AlwaysSpawn,this);
 	UGameplayStatics::FinishSpawningActor(Tornado, FTransform(GetActorRotation(),GetMesh()->GetComponentLocation()));
 }
@@ -279,5 +282,15 @@ void AKatanaHeroRebornCharacter::UseHealthPot()
 		Health += 25 * (Modifier/100);
 		if(Health >= MaxHealth) Health = MaxHealth;
 		HealthPots--;
+	}
+}
+
+void AKatanaHeroRebornCharacter::PlaySound(TArray<USoundWave*> Sounds)
+{
+	if(Sounds.Num() > 0)
+	{
+		USoundWave* RandomSound = Sounds[
+			FMath::RandRange(0,Sounds.Num() - 1)];
+		UGameplayStatics::PlaySound2D(GetWorld(),RandomSound);
 	}
 }
