@@ -17,6 +17,9 @@ AKatanaHeroRebornGameMode::AKatanaHeroRebornGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AKatanaHeroRebornGameMode::BeginPlay()
@@ -50,4 +53,10 @@ void AKatanaHeroRebornGameMode::OnManaUpgrade()
 	AKatanaHeroRebornCharacter* C = Cast<AKatanaHeroRebornCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 	C->MaxMana = ManaUpgrade;
 	C->Mana = ManaUpgrade;
+}
+
+void AKatanaHeroRebornGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	SpeedrunTime += DeltaSeconds;
 }

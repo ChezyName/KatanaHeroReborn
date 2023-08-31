@@ -66,5 +66,8 @@ void ADefaultEnemy::TakeSomeDamage(float _Damage)
 		}
 		Destroy();
 	}
+	else{
+		LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*0.6) * 5000,true,true);
+	}
 }
 

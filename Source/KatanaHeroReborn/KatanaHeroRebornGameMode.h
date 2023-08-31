@@ -87,6 +87,13 @@ public:
 
 	UPROPERTY(EditAnywhere,Category="Categories",BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	FString GoldName = "1";
+
+
+	//Speedrun Timer
+	UPROPERTY(BlueprintReadOnly)
+	float SpeedrunTime = 0;
+
+	void Tick(float DeltaSeconds) override;
 };
 
 
