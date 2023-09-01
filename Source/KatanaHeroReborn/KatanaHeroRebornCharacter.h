@@ -87,6 +87,7 @@ public:
 
 	void PlaySound(TArray<USoundWave*> Sounds);
 
+	UFUNCTION(BlueprintCallable)
 	void TakeDamageChar(float Damage);
 
 	//Primary Sword Attack
