@@ -17,14 +17,14 @@ void AKatanaHeroRebornCharacter::DisplayAfterImages()
 	UGameplayStatics::FinishSpawningActor(VFX, FTransform(FRotator::ZeroRotator,GetMesh()->GetComponentLocation()));
 }
 
-void AKatanaHeroRebornCharacter::TakeDamageChar(float Damage)
+void AKatanaHeroRebornCharacter::TakeDamageChar(float Damage, bool NoUp)
 {
 	if(Attacking || Dashing) return;
 	if(Damage <= 0) return;
 	
 	Health -= Damage;
 	DisplayAfterImages();
-	LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*0.6) * 1500,true,true);
+	if(!NoUp) LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*0.6) * 1500,true,true);
 }
 
 FVector AKatanaHeroRebornCharacter::GetMouseLocation()

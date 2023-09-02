@@ -88,7 +88,7 @@ public:
 	void PlaySound(TArray<USoundWave*> Sounds);
 
 	UFUNCTION(BlueprintCallable)
-	void TakeDamageChar(float Damage);
+	void TakeDamageChar(float Damage, bool NoUp=false);
 
 	//Primary Sword Attack
 	UPROPERTY(EditAnywhere,Category="Yasuo")
