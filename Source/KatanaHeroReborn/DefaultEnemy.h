@@ -36,6 +36,15 @@ public:
 	UPROPERTY(EditAnywhere,Category="Enemy",BlueprintReadOnly)
 	float MaxHealth = 25;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool CanTakeDamage = true;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool AlrHalfHealth = false;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHalfHealth();
+
 	UPROPERTY(BlueprintReadOnly)
 	float Health = 0;
 

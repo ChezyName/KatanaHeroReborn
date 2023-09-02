@@ -54,7 +54,15 @@ void ADefaultEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ADefaultEnemy::TakeSomeDamage(float _Damage)
 {
+	if(!CanTakeDamage) return;
 	Health -= _Damage;
+	
+	if(!AlrHalfHealth && Health / MaxHealth <= 0.5)
+	{
+		OnHalfHealth();
+		AlrHalfHealth = true;
+	}
+	
 	if(Health <= 0)
 	{
 		//Give Player Money
