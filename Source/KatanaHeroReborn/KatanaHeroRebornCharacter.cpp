@@ -23,6 +23,7 @@ void AKatanaHeroRebornCharacter::TakeDamageChar(float Damage, bool NoUp)
 	if(Damage <= 0) return;
 	
 	Health -= Damage;
+	if(Health <= 0) OnDeath();
 	DisplayAfterImages();
 	if(!NoUp) LaunchCharacter((-GetActorForwardVector() + GetActorUpVector()*0.6) * 1500,true,true);
 }

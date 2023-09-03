@@ -72,6 +72,7 @@ void ADefaultEnemy::TakeSomeDamage(float _Damage)
 			UGameplayStatics::FinishSpawningActor(NewCoin, FTransform(FRotator::ZeroRotator,GetActorLocation()));
 			
 		}
+		OnDeath();
 		Destroy();
 	}
 	else{

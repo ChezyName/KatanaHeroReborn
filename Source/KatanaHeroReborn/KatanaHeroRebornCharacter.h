@@ -85,6 +85,9 @@ public:
 
 	void UseHealthPot();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeath();
+
 	void PlaySound(TArray<USoundWave*> Sounds);
 
 	UFUNCTION(BlueprintCallable)

@@ -41,9 +41,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	bool AlrHalfHealth = false;
-
+	
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnHalfHealth();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeath();
 
 	UPROPERTY(BlueprintReadOnly)
 	float Health = 0;
